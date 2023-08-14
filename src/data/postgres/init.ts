@@ -1,8 +1,7 @@
 import { Sequelize } from "sequelize";
+const CONNECTION_URI = `postgres://aniket:${process.env.DB_PASS}@example.com:5432/${process.env.DB_NAME}`;
 
-export const sequelize = new Sequelize(
-  `postgres://aniket:${process.env.DB_PASS}@example.com:5432/${process.env.DB_NAME}`
-);
+export const sequelize = new Sequelize(CONNECTION_URI);
 
 (async () => {
   try {
