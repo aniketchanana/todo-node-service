@@ -1,8 +1,7 @@
 import { IUserRepository } from "../repository/UserRepository";
 import jwt from "jsonwebtoken";
 import { AuthMessages } from "../../../constants/messages";
-import { isEqual } from "lodash";
-import { IPublicUser, IUserModel } from "../../../data/interfaces";
+import { PublicUserAttributes, IUserModel } from "../../../data/interfaces";
 import { inject, injectable } from "inversify";
 import { Types } from "../../../DiTypes";
 import { compareHash, createHash } from "../../../utils/hasing";
@@ -11,8 +10,11 @@ export interface IUserService {
     name: string,
     emailId: string,
     password: string
-  ) => Promise<IPublicUser>;
-  signInUser: (emailId: string, password: string) => Promise<IPublicUser>;
+  ) => Promise<PublicUserAttributes>;
+  signInUser: (
+    emailId: string,
+    password: string
+  ) => Promise<PublicUserAttributes>;
   clearUserAuthToken: (userId: string) => Promise<void>;
 }
 
@@ -30,7 +32,7 @@ export class UserService implements IUserService {
     name: string,
     emailId: string,
     password: string
-  ): Promise<IPublicUser> {
+  ): Promise<PublicUserAttributes> {
     const token = this.generateFreshAuthToken(emailId);
     const hashedPassword = await createHash(password);
     const newUser = await this.userRepository.createNewUser({

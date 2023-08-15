@@ -13,15 +13,15 @@ export interface UserAttributesType {
   token?: string;
 }
 
-export interface TodoListAttributesType {
+export interface TodoListAttributes {
   uuid: string;
   name: string;
   isDeleted: boolean;
 }
 export type IUserModel = UserAttributesType & Model<any, any>;
-export type ITodoListModel = TodoListAttributesType & Model<any, any>;
+export type ITodoListModel = TodoListAttributes & Model<any, any>;
 
-export type IPublicUser = Omit<UserAttributesType, "password">;
+export type PublicUserAttributes = Omit<UserAttributesType, "password">;
 
 export interface AppDataSource<T extends Model> {
   create(data: T): Promise<T>;

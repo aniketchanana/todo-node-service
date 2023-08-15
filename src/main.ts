@@ -1,8 +1,9 @@
-import { userEndpoints } from "./constants/routes";
+import { todoEndpoints, userEndpoints } from "./constants/routes";
 import cors from "cors";
 import server from "./server";
 import UserRouter from "./modules/user/routes";
 import { getAuthMiddleWare } from "./middlewares/auth";
+import TodoRouter from "./modules/todo/routes";
 
 (async () => {
   /**
@@ -14,6 +15,7 @@ import { getAuthMiddleWare } from "./middlewares/auth";
    * Initiating top level app routes
    */
   const userRoutes = UserRouter(authMiddleWare);
+  const todoRoutes = TodoRouter();
 
   /**
    * Registering routes to listen incoming request
@@ -21,6 +23,7 @@ import { getAuthMiddleWare } from "./middlewares/auth";
   server.set("trust proxy", 1);
   server.use(cors({ credentials: true }));
   server.use(userEndpoints.root, userRoutes);
+  server.use(todoEndpoints.root, authMiddleWare, todoRoutes);
 
   server.use("/testAuth", authMiddleWare, (_, res) => {
     return res.status(200).send("Authenticated");

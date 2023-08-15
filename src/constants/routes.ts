@@ -5,7 +5,7 @@ export enum userEndpoints {
   logout = "/logout",
   isValidSession = "/isValidSession",
 }
-export enum todoRoutes {
+export enum todoEndpoints {
   root = "/todo",
   createNewList = "/createNewList",
   create = "/create",
