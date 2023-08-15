@@ -5,14 +5,17 @@ import {
   WhereOptions,
 } from "sequelize";
 
-export interface IUserModel extends Model<any, any> {
-  id: string;
+export interface UserAttributesType {
+  _id: string;
   name: string;
   emailId: string;
   password: string;
   token?: string;
 }
-export type IPublicUser = Omit<IUserModel, "password">;
+export type IUserModel = UserAttributesType & Model<any, any>;
+
+export type IPublicUser = Omit<UserAttributesType, "password">;
+
 export interface AppDataSource<T extends Model> {
   create(data: T): Promise<T>;
   findOne(

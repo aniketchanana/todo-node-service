@@ -25,13 +25,11 @@ export class UserRepository implements IUserRepository {
       name: user.name,
       emailId: user.emailId,
       token: user.token,
-    };
+    } as IPublicUser;
   }
-  public async createNewUser(userDetails: Omit<IUserModel, "_id">) {
+  public async createNewUser(userDetails: IUserModel) {
     try {
-      const newUserDetails = await this.userTable.create(
-        userDetails as IUserModel
-      );
+      const newUserDetails = await this.userTable.create(userDetails);
       const publicUserDetails = this.getPublicUserProfile(newUserDetails);
       return publicUserDetails;
     } catch (e) {

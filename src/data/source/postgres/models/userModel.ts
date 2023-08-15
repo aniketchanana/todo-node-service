@@ -5,7 +5,7 @@ import { IUserModel } from "../../../interfaces";
 export const User = sequelize.define<IUserModel>(
   "User",
   {
-    id: {
+    _id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
     },

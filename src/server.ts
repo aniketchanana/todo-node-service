@@ -4,7 +4,6 @@ import cookieParser from "cookie-parser";
 import "reflect-metadata";
 import "./data/source/init";
 dotEnv.config();
-console.log(process.env);
 const server = express();
 server.use(cookieParser());
 server.use(express.json());

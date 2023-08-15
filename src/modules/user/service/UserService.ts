@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { AuthMessages } from "../../../constants/messages";
 import { decrypt, sha256Encryption } from "../../../utils/encryption";
 import { isEqual } from "lodash";
-import { IPublicUser } from "../../../data/interfaces";
+import { IPublicUser, IUserModel } from "../../../data/interfaces";
 import { inject, injectable } from "inversify";
 import { Types } from "../../../DiTypes";
 export interface IUserService {
@@ -46,7 +46,7 @@ export class UserService implements IUserService {
       emailId,
       password: encryptedPassword,
       token,
-    });
+    } as IUserModel);
 
     return newUser;
   }
