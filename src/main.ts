@@ -22,10 +22,13 @@ import { getAuthMiddleWare } from "./middlewares/auth";
   server.use(cors({ credentials: true }));
   server.use(userUrls.root, userRoutes);
 
-  server.use("/testAuth", authMiddleWare, (req, res) => {
+  server.use("/testAuth", authMiddleWare, (_, res) => {
     return res.status(200).send("Authenticated");
   });
 
+  server.get("/ping", (req, res) => {
+    return res.json({ status: "alive" });
+  });
   /**
    * Server
    */

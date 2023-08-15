@@ -1,11 +1,11 @@
 import { IUserRepository } from "../repository/UserRepository";
 import jwt from "jsonwebtoken";
 import { AuthMessages } from "../../../constants/messages";
-import { decrypt, sha256Encryption } from "../../../utils/encryption";
 import { isEqual } from "lodash";
 import { IPublicUser, IUserModel } from "../../../data/interfaces";
 import { inject, injectable } from "inversify";
 import { Types } from "../../../DiTypes";
+import { compareHash, createHash } from "../../../utils/hasing";
 export interface IUserService {
   createUserAndGenerateAuthToken: (
     name: string,
@@ -26,25 +26,17 @@ export class UserService implements IUserService {
     });
   }
 
-  private verifyPassword(
-    incomingPlacePass: string,
-    existingEncryptedPass: string
-  ): boolean {
-    return isEqual(sha256Encryption(incomingPlacePass), existingEncryptedPass);
-  }
-
   public async createUserAndGenerateAuthToken(
     name: string,
     emailId: string,
     password: string
   ): Promise<IPublicUser> {
     const token = this.generateFreshAuthToken(emailId);
-    const encryptedPassword = sha256Encryption(decrypt(password));
-
+    const hashedPassword = await createHash(password);
     const newUser = await this.userRepository.createNewUser({
       name,
       emailId,
-      password: encryptedPassword,
+      password: hashedPassword,
       token,
     } as IUserModel);
 
@@ -56,7 +48,7 @@ export class UserService implements IUserService {
     if (!tempUser) {
       throw new Error(AuthMessages.UNABLE_TO_SIGN_IN);
     }
-    const isMatch = this.verifyPassword(decrypt(password), tempUser.password);
+    const isMatch = await compareHash(password, tempUser.password);
     if (!isMatch) {
       throw new Error(AuthMessages.UNABLE_TO_SIGN_IN);
     }
