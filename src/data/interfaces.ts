@@ -1,7 +1,7 @@
-import { Model } from "sequelize";
+import { Attributes, Model, WhereOptions } from "sequelize";
 
 export interface Projection {
-  [key: string]: 1 | 0;
+  [key: string]: boolean | 1 | 0;
 }
 export interface IUserModel extends Model<any, any> {
   id: string;
@@ -11,10 +11,19 @@ export interface IUserModel extends Model<any, any> {
   token?: string;
 }
 export type IPublicUser = Omit<IUserModel, "password">;
-export interface AppDataSource<T> {
+export interface AppDataSource<T extends Model> {
   create(data: T): Promise<T>;
-  // bulkInsert(records: T[]): Promise<T[]>;
-  // findOne(filter: Partial<T>, project?: Projection): Promise<T>;
-  // findMany(filter: Partial<T>, project?: Projection): Promise<T[]>;
-  // findOneAndUpdate(filter: Partial<T>, updates: Partial<T>): Promise<T>;
+  findOne(
+    filter: WhereOptions<Attributes<T>>,
+    project?: Projection
+  ): Promise<T>;
+  findMany(
+    filter: WhereOptions<Attributes<T>>,
+    project?: Projection
+  ): Promise<T[]>;
+  findOneAndUpdate(
+    filter: WhereOptions<Attributes<T>>,
+    updates: Partial<T>
+  ): Promise<T>;
+  findOneAndDelete(filter: WhereOptions<Attributes<T>>): Promise<number>;
 }
