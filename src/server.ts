@@ -2,7 +2,7 @@ import express from "express";
 import dotEnv from "dotenv";
 import cookieParser from "cookie-parser";
 import "reflect-metadata";
-import "./data/mongo/init";
+import "./data/source/init";
 dotEnv.config();
 console.log(process.env);
 const server = express();

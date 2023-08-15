@@ -1,8 +1,10 @@
-import { Attributes, Model, WhereOptions } from "sequelize";
+import {
+  Attributes,
+  FindAttributeOptions,
+  Model,
+  WhereOptions,
+} from "sequelize";
 
-export interface Projection {
-  [key: string]: boolean | 1 | 0;
-}
 export interface IUserModel extends Model<any, any> {
   id: string;
   name: string;
@@ -15,11 +17,11 @@ export interface AppDataSource<T extends Model> {
   create(data: T): Promise<T>;
   findOne(
     filter: WhereOptions<Attributes<T>>,
-    project?: Projection
+    project?: FindAttributeOptions
   ): Promise<T>;
   findMany(
     filter: WhereOptions<Attributes<T>>,
-    project?: Projection
+    project?: FindAttributeOptions
   ): Promise<T[]>;
   findOneAndUpdate(
     filter: WhereOptions<Attributes<T>>,

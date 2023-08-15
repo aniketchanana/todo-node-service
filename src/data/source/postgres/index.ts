@@ -1,8 +1,8 @@
 import { injectable, unmanaged } from "inversify";
-import { AppDataSource, IUserModel, Projection } from "../interfaces";
-import { DB_TABLES } from "../../constants/dbTables";
+import { AppDataSource } from "../../interfaces";
+import { DB_TABLES } from "../../../constants/dbTables";
 import { User } from "./models/userModel";
-import { GenericObject } from "../../common/types";
+import { GenericObject } from "../../../common/types";
 import {
   Model,
   ModelCtor,
@@ -10,7 +10,9 @@ import {
   BuildOptions,
   Attributes,
   WhereOptions,
+  FindAttributeOptions,
 } from "sequelize";
+import { isEmpty, set } from "lodash";
 
 const ALL_TABLES: GenericObject<ModelStatic<any>> = {
   [DB_TABLES.USER]: User,
@@ -31,22 +33,30 @@ export class PostgresDataSource<T extends Model> implements AppDataSource<T> {
 
   public async findOne(
     filter: WhereOptions<Attributes<T>>,
-    project?: Projection
+    project?: FindAttributeOptions
   ): Promise<T> {
-    const record = await this.table.findOne({
+    const query = {
       where: filter,
-    });
+    };
+    if (!isEmpty(project)) {
+      set(query, "attributes", project);
+    }
+    const record = await this.table.findOne(query);
 
     return record;
   }
 
   public async findMany(
     filter: WhereOptions<Attributes<T>>,
-    project?: Projection
+    project?: FindAttributeOptions
   ): Promise<T[]> {
-    const records = await this.table.findAll({
+    const query = {
       where: filter,
-    });
+    };
+    if (!isEmpty(project)) {
+      set(query, "attributes", project);
+    }
+    const records = await this.table.findAll(query);
 
     return records;
   }
