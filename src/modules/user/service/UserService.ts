@@ -54,7 +54,7 @@ export class UserService implements IUserService {
     }
 
     const newToken = this.generateFreshAuthToken(emailId);
-    return await this.userRepository.updateExistingUserDetails(tempUser._id, {
+    return await this.userRepository.updateExistingUserDetails(tempUser.uuid, {
       token: newToken,
     });
   }

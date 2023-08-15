@@ -1,4 +1,4 @@
-import { userUrls } from "./constants/routes";
+import { userEndpoints } from "./constants/routes";
 import cors from "cors";
 import server from "./server";
 import UserRouter from "./modules/user/routes";
@@ -20,7 +20,7 @@ import { getAuthMiddleWare } from "./middlewares/auth";
    */
   server.set("trust proxy", 1);
   server.use(cors({ credentials: true }));
-  server.use(userUrls.root, userRoutes);
+  server.use(userEndpoints.root, userRoutes);
 
   server.use("/testAuth", authMiddleWare, (_, res) => {
     return res.status(200).send("Authenticated");

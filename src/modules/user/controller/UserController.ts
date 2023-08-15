@@ -31,13 +31,15 @@ export class UserController implements IUserController {
   @inject(Types.USER_SERVICE) private userService: IUserService;
 
   public async signIn(req: Request, res: Response): Promise<Response> {
-    const validationRes = validateSignInRequest(req.body);
-    if (!validationRes.valid) {
+    try {
+      await validateSignInRequest.validate(req.body);
+    } catch (e) {
       return res.status(StatusCode.BAD_REQUEST).json({
-        title: validationRes.errors[0].message,
+        title: e.message,
         description: CommonMessages.INVALID_REQ_BODY,
       });
     }
+
     try {
       const { emailId, password } = req.body;
       const loggedInUser = await this.userService.signInUser(emailId, password);
@@ -64,10 +66,11 @@ export class UserController implements IUserController {
 
   public async signUp(req: Request, res: Response): Promise<Response> {
     const userDetails = req.body.userDetails as IUserModel;
-    const validationRes = validateSignUpRequest(req.body);
-    if (!validationRes.valid) {
+    try {
+      await validateSignUpRequest.validate(req.body);
+    } catch (e) {
       return res.status(StatusCode.BAD_REQUEST).json({
-        title: validationRes.errors[0].message,
+        title: e.message,
         description: CommonMessages.INVALID_REQ_BODY,
       });
     }
@@ -98,7 +101,7 @@ export class UserController implements IUserController {
       if (!req.user) {
         throw new Error();
       }
-      await this.userService.clearUserAuthToken(req.user._id);
+      await this.userService.clearUserAuthToken(req.user.uuid);
       return res
         .clearCookie("access_token")
         .status(StatusCode.SUCCESS)

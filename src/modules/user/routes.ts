@@ -1,5 +1,5 @@
 import express from "express";
-import { userUrls } from "../../constants/routes";
+import { userEndpoints } from "../../constants/routes";
 import { Types } from "../../DiTypes";
 import { dIContainer } from "../../inversify.config";
 import { IUserController } from "./controller/UserController";
@@ -12,20 +12,20 @@ export default function UserRouter(authMiddleWare) {
     Types.USER_CONTROLLER
   );
   router.post(
-    userUrls.signIn,
+    userEndpoints.signIn,
     userControllerInstance.signIn.bind(userControllerInstance)
   );
   router.post(
-    userUrls.signUp,
+    userEndpoints.signUp,
     userControllerInstance.signUp.bind(userControllerInstance)
   );
   router.put(
-    userUrls.logout,
+    userEndpoints.logout,
     authMiddleWare,
     userControllerInstance.logOut.bind(userControllerInstance)
   );
   router.get(
-    userUrls.isValidSession,
+    userEndpoints.isValidSession,
     authMiddleWare,
     userControllerInstance.isValidSession.bind(userControllerInstance)
   );

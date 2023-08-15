@@ -21,7 +21,7 @@ export class UserRepository implements IUserRepository {
 
   private getPublicUserProfile(user: IUserModel): IPublicUser {
     return {
-      _id: user._id,
+      uuid: user.uuid,
       name: user.name,
       emailId: user.emailId,
       token: user.token,
@@ -52,7 +52,7 @@ export class UserRepository implements IUserRepository {
     try {
       const updatedUserDetails = await this.userTable.findOneAndUpdate(
         {
-          _id: userId,
+          uuid: userId,
         },
         updates
       );

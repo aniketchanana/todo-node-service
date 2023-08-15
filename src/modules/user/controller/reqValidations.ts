@@ -1,44 +1,14 @@
-import { Validator } from "jsonschema";
+import { object, string } from "yup";
 
-const validator = new Validator();
+export const validateSignUpRequest = object({
+  userDetails: object({
+    name: string().required(),
+    emailId: string().required(),
+    password: string().required(),
+  }).required(),
+});
 
-export const validateSignUpRequest = (body) => {
-  return validator.validate(body, {
-    type: "object",
-    properties: {
-      userDetails: {
-        type: "object",
-        properties: {
-          name: {
-            type: "string",
-          },
-          emailId: {
-            type: "string",
-            format: "email",
-          },
-          password: {
-            type: "string",
-          },
-        },
-        required: ["name", "emailId", "password"],
-      },
-    },
-    required: ["userDetails"],
-  });
-};
-
-export const validateSignInRequest = (body) => {
-  return validator.validate(body, {
-    type: "object",
-    properties: {
-      emailId: {
-        type: "string",
-        format: "email",
-      },
-      password: {
-        type: "string",
-      },
-    },
-    required: ["emailId", "password"],
-  });
-};
+export const validateSignInRequest = object({
+  emailId: string().required(),
+  password: string().required(),
+});

@@ -79,9 +79,14 @@ export class PostgresDataSource<T extends Model> implements AppDataSource<T> {
 
   public async findOneAndDelete(
     filter: WhereOptions<Attributes<T>>
-  ): Promise<number> {
-    return this.table.destroy({
-      where: filter,
-    });
+  ): Promise<boolean> {
+    const updates = {
+      isDeleted: true,
+    } as unknown as Partial<T>;
+    const updatedRecord = this.findOneAndUpdate(filter, updates);
+    if (updatedRecord) {
+      return true;
+    }
+    return false;
   }
 }

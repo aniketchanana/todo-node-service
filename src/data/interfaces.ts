@@ -6,13 +6,20 @@ import {
 } from "sequelize";
 
 export interface UserAttributesType {
-  _id: string;
+  uuid: string;
   name: string;
   emailId: string;
   password: string;
   token?: string;
 }
+
+export interface TodoListAttributesType {
+  uuid: string;
+  name: string;
+  isDeleted: boolean;
+}
 export type IUserModel = UserAttributesType & Model<any, any>;
+export type ITodoListModel = TodoListAttributesType & Model<any, any>;
 
 export type IPublicUser = Omit<UserAttributesType, "password">;
 
@@ -30,5 +37,5 @@ export interface AppDataSource<T extends Model> {
     filter: WhereOptions<Attributes<T>>,
     updates: Partial<T>
   ): Promise<T>;
-  findOneAndDelete(filter: WhereOptions<Attributes<T>>): Promise<number>;
+  findOneAndDelete(filter: WhereOptions<Attributes<T>>): Promise<boolean>;
 }
