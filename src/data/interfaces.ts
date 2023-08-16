@@ -14,17 +14,18 @@ interface UserAttributesType {
   password: string;
   token?: string;
 }
-export type IUserModel = Model<UserAttributesType, any>;
-export type IUser = IUserModel["dataValues"];
-export type IPublicUser = Omit<IUser, "password">;
-
-export interface TodoListAttributes {
+interface TodoListAttributes {
   uuid: string;
   name: string;
   isDeleted: boolean;
   userId: string;
 }
+export type IUserModel = Model<UserAttributesType, any>;
+export type IUser = IUserModel["dataValues"];
+export type IPublicUser = Omit<IUser, "password">;
+
 export type ITodoListModel = Model<TodoListAttributes, any>;
+export type ITodoList = ITodoListModel["dataValues"];
 
 export interface AppDataSource<T extends Model> {
   create(

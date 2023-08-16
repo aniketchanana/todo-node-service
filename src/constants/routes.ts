@@ -7,7 +7,12 @@ export enum userEndpoints {
 }
 export enum todoEndpoints {
   root = "/todo",
+
   createNewList = "/createNewList",
+  getUserTodoList = "/getUserTodoList",
+  updateTodoList = "/updateTodoList",
+  deleteTodoList = "/deleteTodoList",
+
   createTodo = "/createTodo",
   getAllTodo = "/getAllTodo",
   updateTodo = "/updateTodo",

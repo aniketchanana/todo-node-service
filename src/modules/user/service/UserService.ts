@@ -4,7 +4,7 @@ import { AuthMessages } from "../../../constants/messages";
 import { IPublicUser, IUserModel } from "../../../data/interfaces";
 import { inject, injectable } from "inversify";
 import { Types } from "../../../DiTypes";
-import { compareHash, createHash } from "../../../utils/hasing";
+import { compareHash, createHash } from "../../../utils/hashing";
 export interface IUserService {
   createUserAndGenerateAuthToken: (
     name: string,

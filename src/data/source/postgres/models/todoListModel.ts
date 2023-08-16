@@ -32,11 +32,3 @@ export const TodoList = sequelize.define<ITodoListModel>(
     timestamps: true,
   }
 );
-
-(async () => {
-  if (process.env.NODE_ENV === "development") {
-    await TodoList.sync({ force: true });
-  } else {
-    await TodoList.sync();
-  }
-})();

@@ -33,11 +33,3 @@ export const User = sequelize.define<IUserModel>(
     timestamps: true,
   }
 );
-
-(async () => {
-  if (process.env.NODE_ENV === "development") {
-    await User.sync({ force: true });
-  } else {
-    await User.sync();
-  }
-})();
