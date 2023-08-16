@@ -14,3 +14,7 @@ export const validateTodoListUpdateRequest = object({
   }).required(),
   listId: string(),
 });
+
+export const validateDeleteTodoLisRequest = object({
+  listId: string(),
+});

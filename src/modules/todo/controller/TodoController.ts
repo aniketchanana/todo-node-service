@@ -5,11 +5,13 @@ import { Types } from "../../../DiTypes";
 import { ITodoService } from "../service/TodoService";
 import {
   validateCreateNewListRequest,
+  validateDeleteTodoLisRequest,
   validateTodoListUpdateRequest,
 } from "./reqValidations";
 import { StatusCode } from "../../../constants/statusCode";
 import { CommonMessages, TodoMessage } from "../../../constants/messages";
 import { get } from "lodash";
+import { isUpdateAllowed } from "../../../utils";
 
 export interface ITodoController {
   createNewList: (
@@ -21,6 +23,10 @@ export interface ITodoController {
     res: Response
   ) => Promise<Response>;
   updateUserTodoList: (
+    req: AuthenticatedRequest,
+    res: Response
+  ) => Promise<Response>;
+  deleteUserTodoList: (
     req: AuthenticatedRequest,
     res: Response
   ) => Promise<Response>;
@@ -89,12 +95,6 @@ export class TodoController implements ITodoController {
     }
   }
 
-  private canUpdateTodoList(updateObj): boolean {
-    const allowedParameters = ["name"];
-    return Object.keys(updateObj).every((parameterName) =>
-      allowedParameters.includes(parameterName)
-    );
-  }
   public async updateUserTodoList(
     req: AuthenticatedRequest,
     res: Response
@@ -111,13 +111,44 @@ export class TodoController implements ITodoController {
       const userId = get(req, "user.uuid");
       const listId = get(req, "body.listId");
       const updates = get(req, "body.updates");
-      if (!this.canUpdateTodoList(updates)) {
+      if (!isUpdateAllowed(updates, ["name"])) {
         throw new Error(CommonMessages.INVALID_REQ_BODY);
       }
       await this.todoService.updateUserTodoList(userId, listId, updates);
 
       res.status(StatusCode.SUCCESS).json({
-        updated: true,
+        success: true,
+      });
+    } catch (e) {
+      return res.status(StatusCode.SERVER_ERROR).json({
+        title: e.message,
+        description: CommonMessages.UNABLE_TO_UPDATE_RECORDS,
+      });
+    }
+  }
+
+  public async deleteUserTodoList(
+    req: AuthenticatedRequest,
+    res: Response
+  ): Promise<Response> {
+    try {
+      await validateDeleteTodoLisRequest.validate(get(req, "body"));
+    } catch (e) {
+      return res.status(StatusCode.BAD_REQUEST).json({
+        title: e.message,
+        description: CommonMessages.INVALID_REQ_BODY,
+      });
+    }
+
+    try {
+      const userId = get(req, "user.uuid");
+      const listId = get(req, "body.listId");
+
+      await this.todoService.updateUserTodoList(userId, listId, {
+        isDeleted: true,
+      });
+      res.status(StatusCode.SUCCESS).json({
+        success: true,
       });
     } catch (e) {
       return res.status(StatusCode.SERVER_ERROR).json({

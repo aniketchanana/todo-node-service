@@ -29,5 +29,10 @@ export default function TodoRouter() {
     todoEndpoints.updateTodoList,
     todoControllerInstance.updateUserTodoList.bind(todoControllerInstance)
   );
+
+  router.delete(
+    todoEndpoints.deleteTodoList,
+    todoControllerInstance.deleteUserTodoList.bind(todoControllerInstance)
+  );
   return router;
 }
