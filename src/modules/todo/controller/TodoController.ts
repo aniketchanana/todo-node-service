@@ -89,6 +89,12 @@ export class TodoController implements ITodoController {
     }
   }
 
+  private canUpdateTodoList(updateObj): boolean {
+    const allowedParameters = ["name"];
+    return Object.keys(updateObj).every((parameterName) =>
+      allowedParameters.includes(parameterName)
+    );
+  }
   public async updateUserTodoList(
     req: AuthenticatedRequest,
     res: Response
@@ -105,6 +111,9 @@ export class TodoController implements ITodoController {
       const userId = get(req, "user.uuid");
       const listId = get(req, "body.listId");
       const updates = get(req, "body.updates");
+      if (!this.canUpdateTodoList(updates)) {
+        throw new Error(CommonMessages.INVALID_REQ_BODY);
+      }
       await this.todoService.updateUserTodoList(userId, listId, updates);
 
       res.status(StatusCode.SUCCESS).json({

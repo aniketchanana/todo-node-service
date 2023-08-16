@@ -44,6 +44,7 @@ export class TodoRepository implements ITodoRepository {
   ): Promise<ITodoList[]> {
     const query: Partial<ITodoList> = {
       userId,
+      isDeleted: false,
     };
     if (listId) {
       query.uuid = listId;
