@@ -2,34 +2,33 @@ import { inject, injectable } from "inversify";
 import { AuthMessages } from "../../../constants/messages";
 import {
   AppDataSource,
-  PublicUserAttributes,
+  IPublicUser,
   IUserModel,
+  IUser,
 } from "../../../data/interfaces";
 import { Types } from "../../../DiTypes";
 
 export interface IUserRepository {
-  createNewUser: (
-    userDetails: Omit<IUserModel, "_id">
-  ) => Promise<PublicUserAttributes>;
-  getUserByEmail: (emailId: string) => Promise<IUserModel>;
+  createNewUser: (userDetails: Partial<IUser>) => Promise<IPublicUser>;
+  getUserByEmail: (emailId: string) => Promise<IUser>;
   updateExistingUserDetails: (
     userId: string,
-    updates: Partial<IUserModel>
-  ) => Promise<PublicUserAttributes>;
+    updates: Partial<IUser>
+  ) => Promise<IPublicUser>;
 }
 @injectable()
 export class UserRepository implements IUserRepository {
   @inject(Types.USER_TABLE) private userTable: AppDataSource<IUserModel>;
 
-  private getPublicUserProfile(user: IUserModel): PublicUserAttributes {
+  private getPublicUserProfile(user: IUser): IPublicUser {
     return {
       uuid: user.uuid,
       name: user.name,
       emailId: user.emailId,
       token: user.token,
-    } as PublicUserAttributes;
+    };
   }
-  public async createNewUser(userDetails: IUserModel) {
+  public async createNewUser(userDetails: Partial<IUser>) {
     try {
       const newUserDetails = await this.userTable.create(userDetails);
       const publicUserDetails = this.getPublicUserProfile(newUserDetails);
@@ -49,8 +48,8 @@ export class UserRepository implements IUserRepository {
 
   public async updateExistingUserDetails(
     userId: string,
-    updates: Partial<IUserModel>
-  ): Promise<PublicUserAttributes> {
+    updates: Partial<IUser>
+  ): Promise<IPublicUser> {
     try {
       const updatedUserDetails = await this.userTable.findOneAndUpdate(
         {

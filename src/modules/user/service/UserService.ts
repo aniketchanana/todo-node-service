@@ -1,7 +1,7 @@
 import { IUserRepository } from "../repository/UserRepository";
 import jwt from "jsonwebtoken";
 import { AuthMessages } from "../../../constants/messages";
-import { PublicUserAttributes, IUserModel } from "../../../data/interfaces";
+import { IPublicUser, IUserModel } from "../../../data/interfaces";
 import { inject, injectable } from "inversify";
 import { Types } from "../../../DiTypes";
 import { compareHash, createHash } from "../../../utils/hasing";
@@ -10,11 +10,8 @@ export interface IUserService {
     name: string,
     emailId: string,
     password: string
-  ) => Promise<PublicUserAttributes>;
-  signInUser: (
-    emailId: string,
-    password: string
-  ) => Promise<PublicUserAttributes>;
+  ) => Promise<IPublicUser>;
+  signInUser: (emailId: string, password: string) => Promise<IPublicUser>;
   clearUserAuthToken: (userId: string) => Promise<void>;
 }
 
@@ -32,7 +29,7 @@ export class UserService implements IUserService {
     name: string,
     emailId: string,
     password: string
-  ): Promise<PublicUserAttributes> {
+  ): Promise<IPublicUser> {
     const token = this.generateFreshAuthToken(emailId);
     const hashedPassword = await createHash(password);
     const newUser = await this.userRepository.createNewUser({
@@ -40,7 +37,7 @@ export class UserService implements IUserService {
       emailId,
       password: hashedPassword,
       token,
-    } as IUserModel);
+    });
 
     return newUser;
   }

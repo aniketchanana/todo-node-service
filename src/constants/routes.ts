@@ -8,8 +8,8 @@ export enum userEndpoints {
 export enum todoEndpoints {
   root = "/todo",
   createNewList = "/createNewList",
-  create = "/create",
-  getAll = "/getAll",
-  update = "/update",
-  delete = "/delete",
+  createTodo = "/createTodo",
+  getAllTodo = "/getAllTodo",
+  updateTodo = "/updateTodo",
+  deleteTodo = "/deleteTodo",
 }

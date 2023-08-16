@@ -10,3 +10,8 @@ export enum AuthMessages {
   UNABLE_TO_SIGN_IN = "Unable to signIn.",
   USER_NOT_FOUND = "User not found.",
 }
+
+export enum TodoMessage {
+  SUCCESSFULLY_CREATED_LIST = "Todo list created successfully",
+  UNABLE_TO_CREATE_LIST = "Unable to create todoList",
+}

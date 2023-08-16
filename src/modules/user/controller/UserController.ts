@@ -4,7 +4,7 @@ import { StatusCode } from "../../../constants/statusCode";
 import { validateSignInRequest, validateSignUpRequest } from "./reqValidations";
 import { AuthMessages, CommonMessages } from "../../../constants/messages";
 import { AuthenticatedRequest } from "../../../common/types";
-import { IUserModel } from "../../../data/interfaces";
+import { IUserModel, IUser } from "../../../data/interfaces";
 import { inject, injectable } from "inversify";
 import { Types } from "../../../DiTypes";
 export interface IUserController {
@@ -65,7 +65,7 @@ export class UserController implements IUserController {
   }
 
   public async signUp(req: Request, res: Response): Promise<Response> {
-    const userDetails = req.body.userDetails as IUserModel;
+    const userDetails = req.body.userDetails as Partial<IUser>;
     try {
       await validateSignUpRequest.validate(req.body);
     } catch (e) {

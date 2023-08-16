@@ -9,37 +9,34 @@ import {
   UserController,
   IUserController,
 } from "./modules/user/controller/UserController";
-import { AppDataSource, IUserModel } from "./data/interfaces";
+import { AppDataSource, ITodoListModel, IUserModel } from "./data/interfaces";
 import { UserTable } from "./data/tables/UserTable";
+import { ITodoService, TodoService } from "./modules/todo/service/TodoService";
 import {
-  ITodoListService,
-  TodoListService,
-} from "./modules/todo/service/TodoListService";
+  ITodoRepository,
+  TodoRepository,
+} from "./modules/todo/repository/TodoRepository";
 import {
-  ITodoListRepository,
-  TodoListRepository,
-} from "./modules/todo/repository/TodoListRepository";
-import {
-  ITodoListController,
-  TodoListController,
-} from "./modules/todo/controller/TodoListController";
+  ITodoController,
+  TodoController,
+} from "./modules/todo/controller/TodoController";
+import { TodoListTable } from "./data/tables/TodoListTable";
 
 const dIContainer = new Container();
 
 // DB tables
 dIContainer.bind<AppDataSource<IUserModel>>(Types.USER_TABLE).to(UserTable);
+dIContainer
+  .bind<AppDataSource<ITodoListModel>>(Types.TODO_LIST_TABLE)
+  .to(TodoListTable);
 
 // For auth service module
 dIContainer.bind<IUserService>(Types.USER_SERVICE).to(UserService);
 dIContainer.bind<IUserRepository>(Types.USER_REPOSITORY).to(UserRepository);
 dIContainer.bind<IUserController>(Types.USER_CONTROLLER).to(UserController);
 
-dIContainer.bind<ITodoListService>(Types.TODO_LIST_SERVICE).to(TodoListService);
-dIContainer
-  .bind<ITodoListRepository>(Types.TODO_LIST_REPOSITORY)
-  .to(TodoListRepository);
-dIContainer
-  .bind<ITodoListController>(Types.TODO_LIST_CONTROLLER)
-  .to(TodoListController);
+dIContainer.bind<ITodoService>(Types.TODO_SERVICE).to(TodoService);
+dIContainer.bind<ITodoRepository>(Types.TODO_REPOSITORY).to(TodoRepository);
+dIContainer.bind<ITodoController>(Types.TODO_CONTROLLER).to(TodoController);
 
 export { dIContainer };

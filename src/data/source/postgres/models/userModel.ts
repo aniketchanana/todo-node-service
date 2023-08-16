@@ -1,13 +1,16 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../init";
 import { IUserModel } from "../../../interfaces";
+import { DB_TABLES } from "../../../../constants/dbTables";
 
 export const User = sequelize.define<IUserModel>(
-  "User",
+  DB_TABLES.USER,
   {
     uuid: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+      unique: true,
     },
     name: {
       type: DataTypes.STRING,
@@ -32,5 +35,9 @@ export const User = sequelize.define<IUserModel>(
 );
 
 (async () => {
-  await User.sync();
+  if (process.env.NODE_ENV === "development") {
+    await User.sync({ force: true });
+  } else {
+    await User.sync();
+  }
 })();

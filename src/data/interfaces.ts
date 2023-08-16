@@ -1,41 +1,49 @@
 import {
   Attributes,
+  BuildOptions,
   FindAttributeOptions,
   Model,
   WhereOptions,
 } from "sequelize";
+import { GenericObject } from "../common/types";
 
-export interface UserAttributesType {
+interface UserAttributesType {
   uuid: string;
   name: string;
   emailId: string;
   password: string;
   token?: string;
 }
+export type IUserModel = Model<UserAttributesType, any>;
+export type IUser = IUserModel["dataValues"];
+export type IPublicUser = Omit<IUser, "password">;
 
 export interface TodoListAttributes {
   uuid: string;
   name: string;
   isDeleted: boolean;
+  userId: string;
 }
-export type IUserModel = UserAttributesType & Model<any, any>;
-export type ITodoListModel = TodoListAttributes & Model<any, any>;
-
-export type PublicUserAttributes = Omit<UserAttributesType, "password">;
+export type ITodoListModel = Model<TodoListAttributes, any>;
 
 export interface AppDataSource<T extends Model> {
-  create(data: T): Promise<T>;
+  create(
+    data: Partial<T["dataValues"]>,
+    options?: BuildOptions
+  ): Promise<T["dataValues"]>;
   findOne(
     filter: WhereOptions<Attributes<T>>,
     project?: FindAttributeOptions
-  ): Promise<T>;
+  ): Promise<T["dataValues"]>;
   findMany(
-    filter: WhereOptions<Attributes<T>>,
+    filter: WhereOptions<Attributes<T["dataValues"]>>,
     project?: FindAttributeOptions
-  ): Promise<T[]>;
+  ): Promise<T["dataValues"][]>;
   findOneAndUpdate(
     filter: WhereOptions<Attributes<T>>,
-    updates: Partial<T>
-  ): Promise<T>;
-  findOneAndDelete(filter: WhereOptions<Attributes<T>>): Promise<boolean>;
+    updates: Partial<T["dataValues"]>
+  ): Promise<T["dataValues"]>;
+  findOneAndDelete(
+    filter: WhereOptions<Attributes<T["dataValues"]>>
+  ): Promise<boolean>;
 }

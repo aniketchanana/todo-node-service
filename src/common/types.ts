@@ -1,10 +1,10 @@
 import { Request } from "express";
-import { IUserModel } from "../data/interfaces";
+import { IUser } from "../data/interfaces";
 
-export interface GenericObject<K> {
+export interface GenericObject<K = any> {
   [key: string]: K;
 }
 
 export interface AuthenticatedRequest extends Request {
-  user: IUserModel | null | undefined;
+  user: IUser | null | undefined;
 }
