@@ -9,4 +9,5 @@ export const Types = {
 
   USER_TABLE: Symbol.for("USER_TABLE"),
   TODO_LIST_TABLE: Symbol.for("TODO_LIST_TABLE"),
+  TODO_ITEM_TABLE: Symbol.for("TODO_ITEM_TABLE"),
 };

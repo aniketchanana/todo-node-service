@@ -3,7 +3,8 @@ export enum CommonMessages {
   INVALID_REQ_BODY = "invalid request json data, please check your request body.",
   UPDATED_RECORDS = "Updated records",
   UNABLE_TO_FETCH_RESULT = "Unable to fetch result",
-  UNABLE_TO_UPDATE_RECORDS = "Unable to update records",
+  UNABLE_TO_UPDATE_RECORD = "Unable to update record",
+  UNABLE_TO_ADD_RECORD = "unable to add record",
 }
 export enum AuthMessages {
   INVALID_CREDENTIALS = "Invalid emailId or password.",
@@ -16,4 +17,5 @@ export enum AuthMessages {
 export enum TodoMessage {
   SUCCESSFULLY_CREATED_LIST = "Todo list created successfully",
   UNABLE_TO_CREATE_LIST = "Unable to create todoList",
+  LIST_ID_IS_REQUIRED = "List id is required",
 }

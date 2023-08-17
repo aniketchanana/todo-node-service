@@ -12,9 +12,33 @@ export const validateTodoListUpdateRequest = object({
   updates: object({
     name: string(),
   }).required(),
-  listId: string(),
-});
+  listId: string().required(),
+}).required();
 
 export const validateDeleteTodoLisRequest = object({
-  listId: string(),
-});
+  listId: string().required(),
+}).required();
+
+export const validateCreateTodoItemRequest = object({
+  text: string().required(),
+  listId: string().required(),
+})
+  .required()
+  .noUnknown();
+
+export const validateUpdateTodoItemRequest = object({
+  updates: object({
+    text: string(),
+  })
+    .noUnknown()
+    .required(),
+  listId: string().required(),
+  todoId: string().required(),
+}).required();
+
+export const validateDeleteTodoItemRequest = object({
+  listId: string().required(),
+  todoId: string().required(),
+})
+  .required()
+  .noUnknown();

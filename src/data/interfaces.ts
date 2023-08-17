@@ -20,12 +20,23 @@ interface TodoListAttributes {
   isDeleted: boolean;
   userId: string;
 }
+
+interface TodoItemAttributes {
+  uuid: string;
+  text: string;
+  todoListId: string;
+  isDeleted: boolean;
+  isChecked: boolean;
+}
 export type IUserModel = Model<UserAttributesType, any>;
 export type IUser = IUserModel["dataValues"];
 export type IPublicUser = Omit<IUser, "password">;
 
 export type ITodoListModel = Model<TodoListAttributes, any>;
 export type ITodoList = ITodoListModel["dataValues"];
+
+export type ITodoItemModel = Model<TodoItemAttributes, any>;
+export type ITodoItem = ITodoItemModel["dataValues"];
 
 export interface AppDataSource<T extends Model> {
   create(

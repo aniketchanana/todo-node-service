@@ -16,10 +16,6 @@ export default function TodoRouter() {
     todoControllerInstance.createNewList.bind(todoControllerInstance)
   );
 
-  /**
-   * This will get one list as per query params ?listId=...
-   * ot all the todo lists at once
-   */
   router.get(
     todoEndpoints.getUserTodoList,
     todoControllerInstance.getUserTodoList.bind(todoControllerInstance)
@@ -34,5 +30,23 @@ export default function TodoRouter() {
     todoEndpoints.deleteTodoList,
     todoControllerInstance.deleteUserTodoList.bind(todoControllerInstance)
   );
+
+  router.post(
+    todoEndpoints.createTodoItem,
+    todoControllerInstance.createNewTodoItem.bind(todoControllerInstance)
+  );
+  router.get(
+    todoEndpoints.getUserTodoItem,
+    todoControllerInstance.getUserTodoItem.bind(todoControllerInstance)
+  );
+  router.patch(
+    todoEndpoints.updateTodoItem,
+    todoControllerInstance.updateUserTodoItem.bind(todoControllerInstance)
+  );
+  router.delete(
+    todoEndpoints.deleteTodoItem,
+    todoControllerInstance.deleteUserTodoItem.bind(todoControllerInstance)
+  );
+
   return router;
 }

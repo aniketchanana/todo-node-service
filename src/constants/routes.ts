@@ -13,8 +13,8 @@ export enum todoEndpoints {
   updateTodoList = "/updateTodoList",
   deleteTodoList = "/deleteTodoList",
 
-  createTodo = "/createTodo",
-  getAllTodo = "/getAllTodo",
-  updateTodo = "/updateTodo",
-  deleteTodo = "/deleteTodo",
+  createTodoItem = "/createTodoItem",
+  getUserTodoItem = "/getUserTodoItem",
+  updateTodoItem = "/updateTodoItem",
+  deleteTodoItem = "/deleteTodoItem",
 }

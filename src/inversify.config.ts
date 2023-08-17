@@ -9,7 +9,12 @@ import {
   UserController,
   IUserController,
 } from "./modules/user/controller/UserController";
-import { AppDataSource, ITodoListModel, IUserModel } from "./data/interfaces";
+import {
+  AppDataSource,
+  ITodoItemModel,
+  ITodoListModel,
+  IUserModel,
+} from "./data/interfaces";
 import { UserTable } from "./data/tables/UserTable";
 import { ITodoService, TodoService } from "./modules/todo/service/TodoService";
 import {
@@ -21,6 +26,7 @@ import {
   TodoController,
 } from "./modules/todo/controller/TodoController";
 import { TodoListTable } from "./data/tables/TodoListTable";
+import { TodoItemTable } from "./data/tables/TodoItemTable";
 
 const dIContainer = new Container();
 
@@ -29,6 +35,10 @@ dIContainer.bind<AppDataSource<IUserModel>>(Types.USER_TABLE).to(UserTable);
 dIContainer
   .bind<AppDataSource<ITodoListModel>>(Types.TODO_LIST_TABLE)
   .to(TodoListTable);
+
+dIContainer
+  .bind<AppDataSource<ITodoItemModel>>(Types.TODO_ITEM_TABLE)
+  .to(TodoItemTable);
 
 // For auth service module
 dIContainer.bind<IUserService>(Types.USER_SERVICE).to(UserService);
