@@ -12,8 +12,7 @@ export const getAuthMiddleWare = () => {
 
   return async (req, res, next) => {
     try {
-      const token =
-        req.headers?.cookie?.token?.split("=")[1] || req.headers.token;
+      const token = req.headers?.cookie?.split("=")[1] || req.headers.token;
       const decoded = jwt.verify(token, process.env.JWT) as { emailId: string };
       const user = await userTable.findOne({
         emailId: decoded.emailId,
