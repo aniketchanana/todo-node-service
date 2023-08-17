@@ -91,7 +91,6 @@ export class TodoRepository implements ITodoRepository {
     listId: string,
     userId: string
   ): Promise<ITodoItem> {
-    console.log(this.todoItemTable);
     return this.todoItemTable.create({
       text,
       userId,
