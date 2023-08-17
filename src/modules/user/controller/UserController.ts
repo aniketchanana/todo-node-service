@@ -47,9 +47,9 @@ export class UserController implements IUserController {
         throw new Error(AuthMessages.UNABLE_TO_SIGN_IN);
       }
       return res
-        .cookie("access_token", loggedInUser.token, CookieSetterOptions)
+        .cookie("token", loggedInUser.token, CookieSetterOptions)
         .status(StatusCode.SUCCESS)
-        .json({ access_token: loggedInUser.token });
+        .json({ user: loggedInUser });
     } catch (e) {
       if (e.message === AuthMessages.UNABLE_TO_SIGN_IN) {
         return res.status(StatusCode.UN_AUTHORIZED).send({
@@ -82,9 +82,9 @@ export class UserController implements IUserController {
         userDetails.password
       );
       return res
-        .cookie("access_token", newUser.token, CookieSetterOptions)
+        .cookie("token", newUser.token, CookieSetterOptions)
         .status(StatusCode.RESOURCE_CREATED)
-        .json({ access_token: newUser.token });
+        .json({ user: newUser });
     } catch (e) {
       return res.status(StatusCode.SERVER_ERROR).json({
         title: e.message,
@@ -102,10 +102,7 @@ export class UserController implements IUserController {
         throw new Error();
       }
       await this.userService.clearUserAuthToken(req.user.uuid);
-      return res
-        .clearCookie("access_token")
-        .status(StatusCode.SUCCESS)
-        .json({});
+      return res.clearCookie("token").status(StatusCode.SUCCESS).json({});
     } catch (e) {
       return res.status(StatusCode.UN_AUTHORIZED).json({
         title: AuthMessages.INVALID_USER,
@@ -122,6 +119,6 @@ export class UserController implements IUserController {
         title: AuthMessages.INVALID_USER,
       });
     }
-    return res.status(StatusCode.SUCCESS).json({});
+    return res.status(StatusCode.SUCCESS).json({ user: req.user });
   }
 }

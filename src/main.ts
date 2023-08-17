@@ -1,5 +1,4 @@
 import { todoEndpoints, userEndpoints } from "./constants/routes";
-import cors from "cors";
 import server from "./server";
 import UserRouter from "./modules/user/routes";
 import { getAuthMiddleWare } from "./middlewares/auth";
@@ -21,7 +20,6 @@ import TodoRouter from "./modules/todo/routes";
    * Registering routes to listen incoming request
    */
   server.set("trust proxy", 1);
-  server.use(cors({ credentials: true }));
   server.use(userEndpoints.root, userRoutes);
   server.use(todoEndpoints.root, authMiddleWare, todoRoutes);
 
