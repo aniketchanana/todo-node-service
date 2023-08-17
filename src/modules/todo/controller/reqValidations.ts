@@ -22,16 +22,12 @@ export const validateDeleteTodoLisRequest = object({
 export const validateCreateTodoItemRequest = object({
   text: string().required(),
   listId: string().required(),
-})
-  .required()
-  .noUnknown();
+}).required();
 
 export const validateUpdateTodoItemRequest = object({
   updates: object({
     text: string(),
-  })
-    .noUnknown()
-    .required(),
+  }).required(),
   listId: string().required(),
   todoId: string().required(),
 }).required();
@@ -39,6 +35,4 @@ export const validateUpdateTodoItemRequest = object({
 export const validateDeleteTodoItemRequest = object({
   listId: string().required(),
   todoId: string().required(),
-})
-  .required()
-  .noUnknown();
+}).required();

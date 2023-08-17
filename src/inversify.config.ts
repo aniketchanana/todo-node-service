@@ -15,7 +15,6 @@ import {
   ITodoListModel,
   IUserModel,
 } from "./data/interfaces";
-import { UserTable } from "./data/tables/UserTable";
 import { ITodoService, TodoService } from "./modules/todo/service/TodoService";
 import {
   ITodoRepository,
@@ -27,6 +26,7 @@ import {
 } from "./modules/todo/controller/TodoController";
 import { TodoListTable } from "./data/tables/TodoListTable";
 import { TodoItemTable } from "./data/tables/TodoItemTable";
+import { UserTable } from "./data/tables/UserTable";
 
 const dIContainer = new Container();
 
@@ -35,7 +35,6 @@ dIContainer.bind<AppDataSource<IUserModel>>(Types.USER_TABLE).to(UserTable);
 dIContainer
   .bind<AppDataSource<ITodoListModel>>(Types.TODO_LIST_TABLE)
   .to(TodoListTable);
-
 dIContainer
   .bind<AppDataSource<ITodoItemModel>>(Types.TODO_ITEM_TABLE)
   .to(TodoItemTable);

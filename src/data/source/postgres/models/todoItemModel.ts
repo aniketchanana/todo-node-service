@@ -6,11 +6,13 @@ import { ITodoItemModel } from "../../../interfaces";
 import { TodoList } from "./todoListModel";
 
 export const TodoItem = sequelize.define<ITodoItemModel>(
-  DB_TABLES.TODO_LIST,
+  DB_TABLES.TODO_ITEM,
   {
     uuid: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
+      unique: true,
+      primaryKey: true,
     },
     text: {
       type: DataTypes.STRING,

@@ -14,10 +14,12 @@ import {
   FindAttributeOptions,
 } from "sequelize";
 import { isEmpty, set } from "lodash";
+import { TodoItem } from "./models/todoItemModel";
 
 const ALL_TABLES: GenericObject<ModelStatic<any>> = {
   [DB_TABLES.USER]: User,
   [DB_TABLES.TODO_LIST]: TodoList,
+  [DB_TABLES.TODO_ITEM]: TodoItem,
 };
 
 @injectable()

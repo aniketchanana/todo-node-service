@@ -62,9 +62,7 @@ export class TodoController implements ITodoController {
   ): Promise<Response> {
     const { body: newListParameters } = req;
     try {
-      await validateCreateNewListRequest
-        .noUnknown()
-        .validate(newListParameters);
+      await validateCreateNewListRequest.validate(newListParameters);
     } catch (e) {
       return res.status(StatusCode.BAD_REQUEST).json({
         title: e.message,
@@ -122,9 +120,10 @@ export class TodoController implements ITodoController {
     res: Response
   ): Promise<Response> {
     try {
-      await validateTodoListUpdateRequest
-        .noUnknown()
-        .validate(get(req, "body"));
+      await validateTodoListUpdateRequest.validate(get(req, "body"));
+      if (!isUpdateAllowed(get(req, "body.updates"), ["name"])) {
+        throw new Error(CommonMessages.INVALID_REQ_BODY);
+      }
     } catch (e) {
       return res.status(StatusCode.BAD_REQUEST).json({
         title: e.message,
@@ -250,6 +249,9 @@ export class TodoController implements ITodoController {
   ): Promise<Response> {
     try {
       await validateUpdateTodoItemRequest.validate(get(req, "body"));
+      if (!isUpdateAllowed(get(req, "body.updates"), ["text", "isChecked"])) {
+        throw new Error(CommonMessages.INVALID_REQ_BODY);
+      }
     } catch (e) {
       return res.status(StatusCode.BAD_REQUEST).json({
         title: e.message,

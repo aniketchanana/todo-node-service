@@ -43,10 +43,10 @@ export interface ITodoRepository {
 
 @injectable()
 export class TodoRepository implements ITodoRepository {
-  @inject(Types.TODO_LIST_TABLE)
-  private todoListTable: AppDataSource<ITodoListModel>;
   @inject(Types.TODO_ITEM_TABLE)
   private todoItemTable: AppDataSource<ITodoItemModel>;
+  @inject(Types.TODO_LIST_TABLE)
+  private todoListTable: AppDataSource<ITodoListModel>;
 
   public async createNewList(
     listName: string,
@@ -91,6 +91,7 @@ export class TodoRepository implements ITodoRepository {
     listId: string,
     userId: string
   ): Promise<ITodoItem> {
+    console.log(this.todoItemTable);
     return this.todoItemTable.create({
       text,
       userId,
@@ -109,7 +110,7 @@ export class TodoRepository implements ITodoRepository {
       todoListId: listId,
     };
     if (todoId) {
-      query.uuid = listId;
+      query.uuid = todoId;
     }
     return this.todoItemTable.findMany(query);
   }
