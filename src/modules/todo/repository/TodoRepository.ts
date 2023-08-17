@@ -4,6 +4,8 @@ import {
   ITodoListModel,
   ITodoList,
   IUser,
+  ITodoItem,
+  ITodoItemModel,
 } from "../../../data/interfaces";
 import { Types } from "../../../DiTypes";
 import { sequelize } from "../../../data/source/postgres/init";
@@ -19,6 +21,22 @@ export interface ITodoRepository {
     listId: string,
     updates: Partial<ITodoList>
   ) => Promise<ITodoList>;
+  createNewTodoItem: (
+    text: string,
+    listId: string,
+    userId: string
+  ) => Promise<ITodoItem>;
+  getUserTodoItem: (
+    userId: string,
+    listId: string,
+    todoId: string | null
+  ) => Promise<ITodoItem[]>;
+  updateUserTodoItem: (
+    userId: string,
+    listId: string,
+    todoId: string,
+    updates: Partial<ITodoItem>
+  ) => Promise<ITodoItem>;
 }
 
 // ToDo: fix any typeCasting here
@@ -27,6 +45,8 @@ export interface ITodoRepository {
 export class TodoRepository implements ITodoRepository {
   @inject(Types.TODO_LIST_TABLE)
   private todoListTable: AppDataSource<ITodoListModel>;
+  @inject(Types.TODO_ITEM_TABLE)
+  private todoItemTable: AppDataSource<ITodoItemModel>;
 
   public async createNewList(
     listName: string,
@@ -61,6 +81,50 @@ export class TodoRepository implements ITodoRepository {
       {
         userId,
         uuid: listId,
+      },
+      { ...updates }
+    );
+  }
+
+  public async createNewTodoItem(
+    text: string,
+    listId: string,
+    userId: string
+  ): Promise<ITodoItem> {
+    return this.todoItemTable.create({
+      text,
+      userId,
+      todoListId: listId,
+    });
+  }
+
+  public async getUserTodoItem(
+    userId: string,
+    listId: string,
+    todoId: string | null
+  ): Promise<ITodoItem[]> {
+    const query: Partial<ITodoItem> = {
+      userId,
+      isDeleted: false,
+      todoListId: listId,
+    };
+    if (todoId) {
+      query.uuid = listId;
+    }
+    return this.todoItemTable.findMany(query);
+  }
+
+  public async updateUserTodoItem(
+    userId: string,
+    listId: string,
+    todoId: string,
+    updates: Partial<ITodoItem>
+  ): Promise<ITodoItem> {
+    return this.todoItemTable.findOneAndUpdate(
+      {
+        userId,
+        uuid: todoId,
+        todoListId: listId,
       },
       { ...updates }
     );

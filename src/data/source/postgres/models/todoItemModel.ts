@@ -32,6 +32,14 @@ export const TodoItem = sequelize.define<ITodoItemModel>(
         key: "uuid",
       },
     },
+    userId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: User,
+        key: "uuid",
+      },
+    },
   },
   {
     timestamps: true,

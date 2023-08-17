@@ -27,6 +27,7 @@ interface TodoItemAttributes {
   todoListId: string;
   isDeleted: boolean;
   isChecked: boolean;
+  userId: string;
 }
 export type IUserModel = Model<UserAttributesType, any>;
 export type IUser = IUserModel["dataValues"];

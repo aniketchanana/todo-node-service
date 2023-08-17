@@ -197,7 +197,7 @@ export class TodoController implements ITodoController {
     try {
       const { text, listId } = reqBody;
       const { uuid: userId } = req.user;
-      const newlyAddedTodoItem = this.todoService.createNewTodoItem(
+      const newlyAddedTodoItem = await this.todoService.createNewTodoItem(
         text,
         listId,
         userId

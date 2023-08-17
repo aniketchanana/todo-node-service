@@ -1,5 +1,5 @@
 import { inject, injectable } from "inversify";
-import { ITodoList } from "../../../data/interfaces";
+import { ITodoItem, ITodoList } from "../../../data/interfaces";
 import { Types } from "../../../DiTypes";
 import { ITodoRepository } from "../repository/TodoRepository";
 
@@ -14,6 +14,24 @@ export interface ITodoService {
     listId: string,
     updates: Partial<ITodoList>
   ) => Promise<ITodoList>;
+
+  createNewTodoItem: (
+    text: string,
+    listId: string,
+    userId: string
+  ) => Promise<ITodoItem>;
+
+  getUserTodoItem: (
+    userId: string,
+    listId: string,
+    todoId: string | null
+  ) => Promise<ITodoItem[]>;
+  updateUserTodoItem: (
+    userId: string,
+    listId: string,
+    todoId: string,
+    update: Partial<ITodoItem>
+  ) => Promise<ITodoItem>;
 }
 
 @injectable()
@@ -41,5 +59,35 @@ export class TodoService implements ITodoService {
     updates: Partial<ITodoList>
   ): Promise<ITodoList> {
     return this.todoRepository.updateTodoList(userId, listId, updates);
+  }
+
+  public async createNewTodoItem(
+    text: string,
+    listId: string,
+    userId: string
+  ): Promise<ITodoItem> {
+    return this.todoRepository.createNewTodoItem(text, listId, userId);
+  }
+
+  public async getUserTodoItem(
+    userId: string,
+    listId: string,
+    todoId: string
+  ): Promise<ITodoItem[]> {
+    return this.todoRepository.getUserTodoItem(userId, listId, todoId);
+  }
+
+  public async updateUserTodoItem(
+    userId: string,
+    listId: string,
+    todoId: string,
+    updates: Partial<ITodoItem>
+  ): Promise<ITodoItem> {
+    return this.todoRepository.updateUserTodoItem(
+      userId,
+      listId,
+      todoId,
+      updates
+    );
   }
 }
