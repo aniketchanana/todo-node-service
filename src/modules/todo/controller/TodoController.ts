@@ -96,10 +96,14 @@ export class TodoController implements ITodoController {
     try {
       const { user, query } = req;
       let listId = get(query, "listId", null);
+      let pageNumber = get(query, "pageNumber", null);
+      let pageSize = get(query, "pageSize", null);
 
       const allTodoList = await this.todoService.getUserTodoList(
         user.uuid,
-        listId
+        listId,
+        pageNumber,
+        pageSize
       );
 
       return res.status(StatusCode.SUCCESS).json({
@@ -220,6 +224,9 @@ export class TodoController implements ITodoController {
       const { user, query } = req;
       let todoId = get(query, "todoId", null);
       let listId = get(query, "listId", null);
+      let pageNumber = get(query, "pageNumber", null);
+      let pageSize = get(query, "pageSize", null);
+
       if (!listId) {
         throw new Error(TodoMessage.LIST_ID_IS_REQUIRED);
       }
@@ -227,7 +234,9 @@ export class TodoController implements ITodoController {
       const allTodoItems = await this.todoService.getUserTodoItem(
         user.uuid,
         listId,
-        todoId
+        todoId,
+        pageNumber,
+        pageSize
       );
 
       return res.status(StatusCode.SUCCESS).json({

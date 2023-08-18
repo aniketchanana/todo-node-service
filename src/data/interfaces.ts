@@ -39,6 +39,10 @@ export type ITodoList = ITodoListModel["dataValues"];
 export type ITodoItemModel = Model<TodoItemAttributes, any>;
 export type ITodoItem = ITodoItemModel["dataValues"];
 
+export interface IPagination {
+  pageNumber: number;
+  pageSize: number;
+}
 export interface AppDataSource<T extends Model> {
   create(
     data: Partial<T["dataValues"]>,
@@ -50,7 +54,8 @@ export interface AppDataSource<T extends Model> {
   ): Promise<T["dataValues"]>;
   findMany(
     filter: WhereOptions<Attributes<T["dataValues"]>>,
-    project?: FindAttributeOptions
+    project?: FindAttributeOptions,
+    pagination?: IPagination
   ): Promise<T["dataValues"][]>;
   findOneAndUpdate(
     filter: WhereOptions<Attributes<T>>,

@@ -2,12 +2,15 @@ import { inject, injectable } from "inversify";
 import { ITodoItem, ITodoList } from "../../../data/interfaces";
 import { Types } from "../../../DiTypes";
 import { ITodoRepository } from "../repository/TodoRepository";
+import { TodoMessage } from "../../../constants/messages";
 
 export interface ITodoService {
   createNewList: (listName: string, userUUID: string) => Promise<ITodoList>;
   getUserTodoList: (
     userId: string,
-    listId: string | null
+    listId: string | null,
+    pageNumber: number | null,
+    pageSize: number | null
   ) => Promise<ITodoList[]>;
   updateUserTodoList: (
     userId: string,
@@ -24,7 +27,9 @@ export interface ITodoService {
   getUserTodoItem: (
     userId: string,
     listId: string,
-    todoId: string | null
+    todoId: string | null,
+    pageNumber: number | null,
+    pageSize: number | null
   ) => Promise<ITodoItem[]>;
   updateUserTodoItem: (
     userId: string,
@@ -48,9 +53,16 @@ export class TodoService implements ITodoService {
 
   public async getUserTodoList(
     userId: string,
-    listId: string | null
+    listId: string | null,
+    pageNumber: number,
+    pageSize: number
   ): Promise<ITodoList[]> {
-    return this.todoRepository.getUserTodoList(userId, listId);
+    return this.todoRepository.getUserTodoList(
+      userId,
+      listId,
+      pageNumber,
+      pageSize
+    );
   }
 
   public async updateUserTodoList(
@@ -74,7 +86,23 @@ export class TodoService implements ITodoService {
     listId: string,
     todoId: string
   ): Promise<ITodoItem[]> {
-    return this.todoRepository.getUserTodoItem(userId, listId, todoId);
+    const userList = await this.todoRepository.getUserTodoList(
+      userId,
+      listId,
+      1,
+      1
+    );
+    if (userList.length > 0) {
+      return await this.todoRepository.getUserTodoItem(
+        userId,
+        listId,
+        todoId,
+        null,
+        null
+      );
+    }
+
+    throw new Error(TodoMessage.REQUESTED_LIST_IS_NOT_AVAILABLE);
   }
 
   public async updateUserTodoItem(

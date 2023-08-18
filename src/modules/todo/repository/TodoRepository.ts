@@ -6,6 +6,7 @@ import {
   IUser,
   ITodoItem,
   ITodoItemModel,
+  IPagination,
 } from "../../../data/interfaces";
 import { Types } from "../../../DiTypes";
 import { sequelize } from "../../../data/source/postgres/init";
@@ -14,7 +15,9 @@ export interface ITodoRepository {
   createNewList: (listName: string, userUUID: string) => Promise<ITodoList>;
   getUserTodoList: (
     userId: string,
-    listId: string | null
+    listId: string | null,
+    pageNumber: number | null,
+    pageSize: number | null
   ) => Promise<ITodoList[]>;
   updateTodoList: (
     userId: string,
@@ -29,7 +32,9 @@ export interface ITodoRepository {
   getUserTodoItem: (
     userId: string,
     listId: string,
-    todoId: string | null
+    todoId: string | null,
+    pageNumber: number | null,
+    pageSize: number | null
   ) => Promise<ITodoItem[]>;
   updateUserTodoItem: (
     userId: string,
@@ -60,7 +65,9 @@ export class TodoRepository implements ITodoRepository {
 
   public async getUserTodoList(
     userId: string,
-    listId: string | null
+    listId: string | null,
+    pageNumber: number | null,
+    pageSize: number | null
   ): Promise<ITodoList[]> {
     const query: Partial<ITodoList> = {
       userId,
@@ -69,7 +76,14 @@ export class TodoRepository implements ITodoRepository {
     if (listId) {
       query.uuid = listId;
     }
-    return this.todoListTable.findMany(query);
+    let pagination = {} as IPagination;
+    if (pageNumber && pageSize) {
+      pagination = {
+        pageNumber,
+        pageSize,
+      };
+    }
+    return this.todoListTable.findMany(query, undefined, pagination);
   }
 
   public async updateTodoList(
@@ -101,7 +115,9 @@ export class TodoRepository implements ITodoRepository {
   public async getUserTodoItem(
     userId: string,
     listId: string,
-    todoId: string | null
+    todoId: string | null,
+    pageNumber: number | null,
+    pageSize: number | null
   ): Promise<ITodoItem[]> {
     const query: Partial<ITodoItem> = {
       userId,

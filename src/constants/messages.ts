@@ -18,4 +18,5 @@ export enum TodoMessage {
   SUCCESSFULLY_CREATED_LIST = "Todo list created successfully",
   UNABLE_TO_CREATE_LIST = "Unable to create todoList",
   LIST_ID_IS_REQUIRED = "List id is required",
+  REQUESTED_LIST_IS_NOT_AVAILABLE = "Requested todo list is not available",
 }
