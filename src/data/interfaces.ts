@@ -43,6 +43,13 @@ export interface IPagination {
   pageNumber: number;
   pageSize: number;
 }
+
+export interface IFindManyQuery<T extends Model> {
+  filter: WhereOptions<Attributes<T["dataValues"]>>;
+  project?: FindAttributeOptions;
+  pagination?: IPagination;
+  orderByQuery?: string[][];
+}
 export interface AppDataSource<T extends Model> {
   create(
     data: Partial<T["dataValues"]>,
@@ -52,11 +59,7 @@ export interface AppDataSource<T extends Model> {
     filter: WhereOptions<Attributes<T>>,
     project?: FindAttributeOptions
   ): Promise<T["dataValues"]>;
-  findMany(
-    filter: WhereOptions<Attributes<T["dataValues"]>>,
-    project?: FindAttributeOptions,
-    pagination?: IPagination
-  ): Promise<T["dataValues"][]>;
+  findMany(options: IFindManyQuery<T>): Promise<T["dataValues"][]>;
   findOneAndUpdate(
     filter: WhereOptions<Attributes<T>>,
     updates: Partial<T["dataValues"]>

@@ -14,7 +14,6 @@ export const getAuthMiddleWare = () => {
 
   return async (req, res, next) => {
     try {
-      console.log(req.headers);
       const token =
         parseCookieString(get(req, "headers.cookie", "")).token ||
         req.headers.token;

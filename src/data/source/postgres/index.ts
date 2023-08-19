@@ -1,5 +1,5 @@
 import { injectable, unmanaged } from "inversify";
-import { AppDataSource, IPagination } from "../../interfaces";
+import { AppDataSource, IFindManyQuery, IPagination } from "../../interfaces";
 import { DB_TABLES } from "../../../constants/dbTables";
 import { User } from "./models/userModel";
 import { TodoList } from "./models/todoListModel";
@@ -53,11 +53,12 @@ export class PostgresDataSource<T extends Model> implements AppDataSource<T> {
     return record.dataValues;
   }
 
-  public async findMany(
-    filter: WhereOptions<Attributes<T["dataValues"]>>,
-    project?: FindAttributeOptions,
-    pagination?: IPagination
-  ): Promise<T["dataValues"][]> {
+  public async findMany({
+    filter,
+    project,
+    pagination,
+    orderByQuery,
+  }: IFindManyQuery<T>): Promise<T["dataValues"][]> {
     const query = {
       where: filter,
     };
@@ -70,9 +71,11 @@ export class PostgresDataSource<T extends Model> implements AppDataSource<T> {
       set(query, "offset", offset);
       set(query, "limit", pageSize);
     }
+    if (!isEmpty(orderByQuery)) {
+      set(query, "order", orderByQuery);
+    }
     const records = await this.table.findAll({
       ...query,
-      order: [["createdAt", "DESC"]],
     });
 
     return records;

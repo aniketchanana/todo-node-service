@@ -83,7 +83,11 @@ export class TodoRepository implements ITodoRepository {
         pageSize,
       };
     }
-    return this.todoListTable.findMany(query, undefined, pagination);
+    return this.todoListTable.findMany({
+      filter: query,
+      pagination,
+      orderByQuery: [["createdAt", "DESC"]],
+    });
   }
 
   public async updateTodoList(
@@ -127,7 +131,10 @@ export class TodoRepository implements ITodoRepository {
     if (todoId) {
       query.uuid = todoId;
     }
-    return this.todoItemTable.findMany(query);
+    return this.todoItemTable.findMany({
+      filter: query,
+      orderByQuery: [["createdAt", "ASC"]],
+    });
   }
 
   public async updateUserTodoItem(
