@@ -39,11 +39,15 @@ export class UserRepository implements IUserRepository {
   }
 
   public async getUserByEmail(emailId: string) {
-    const user = await this.userTable.findOne({ emailId });
-    if (!user) {
-      throw new Error(AuthMessages.USER_NOT_FOUND);
+    try {
+      const user = await this.userTable.findOne({ emailId });
+      if (!user) {
+        throw new Error();
+      }
+      return user;
+    } catch {
+      throw new Error(AuthMessages.INVALID_USER);
     }
-    return user;
   }
 
   public async updateExistingUserDetails(

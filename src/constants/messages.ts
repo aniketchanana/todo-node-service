@@ -11,7 +11,6 @@ export enum AuthMessages {
   INVALID_USER = "Invalid user",
   UNABLE_TO_CREATE_NEW_USER = "Unable to create new user.",
   UNABLE_TO_SIGN_IN = "Unable to signIn.",
-  USER_NOT_FOUND = "User not found.",
 }
 
 export enum TodoMessage {

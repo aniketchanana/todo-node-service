@@ -4,6 +4,8 @@ import { AppDataSource, IUserModel } from "../data/interfaces";
 import jwt from "jsonwebtoken";
 import { dIContainer } from "../inversify.config";
 import { Types } from "../DiTypes";
+import { parseCookieString } from "../utils";
+import { get } from "lodash";
 
 export const getAuthMiddleWare = () => {
   const userTable: AppDataSource<IUserModel> = dIContainer.get<
@@ -12,7 +14,10 @@ export const getAuthMiddleWare = () => {
 
   return async (req, res, next) => {
     try {
-      const token = req.headers?.cookie?.split("=")[1] || req.headers.token;
+      console.log(req.headers);
+      const token =
+        parseCookieString(get(req, "headers.cookie", "")).token ||
+        req.headers.token;
       const decoded = jwt.verify(token, process.env.JWT) as { emailId: string };
       const user = await userTable.findOne({
         emailId: decoded.emailId,
