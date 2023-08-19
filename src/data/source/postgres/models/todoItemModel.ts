@@ -15,7 +15,7 @@ export const TodoItem = sequelize.define<ITodoItemModel>(
       primaryKey: true,
     },
     text: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       defaultValue: "",
     },
     isDeleted: {

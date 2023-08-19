@@ -13,20 +13,20 @@ export const User = sequelize.define<IUserModel>(
       unique: true,
     },
     name: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     emailId: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
       unique: true,
     },
     password: {
       allowNull: false,
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
     },
     token: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
     },
   },
   {

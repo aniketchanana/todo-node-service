@@ -14,7 +14,7 @@ export const TodoList = sequelize.define<ITodoListModel>(
       unique: true,
     },
     name: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     isDeleted: {
