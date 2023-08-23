@@ -1,1 +1,0 @@
-{"version":3,"file":"TodoItemTable.js","sourceRoot":"","sources":["../../../../src/data/tables/TodoItemTable.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,yCAAuC;AACvC,uDAAqD;AAErD,sCAAuC;AAGhC,IAAM,aAAa,GAAnB,MAAM,aAAc,SAAQ,mBAA0B;IAC3D;QACE,KAAK,CAAC,oBAAS,CAAC,SAAS,CAAC,CAAC;IAC7B,CAAC;CACF,CAAA;AAJY,aAAa;IADzB,IAAA,sBAAU,GAAE;;GACA,aAAa,CAIzB;AAJY,sCAAa"}
